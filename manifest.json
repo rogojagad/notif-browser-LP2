@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "Notif Browser LP2",
+    "version": "0.1",
+    "background": {
+        "scripts": ["jquery.min.js","background.js"]
+    },
+    "browser_action": {
+        "default_title": "Notifikasi Kegiatan LP2",
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    },
+    "permissions": [
+        "*://reservasi.lp2.if.its.ac.id/feeder/*",
+        "activeTab",
+        "notifications"
+    ]
+  }
