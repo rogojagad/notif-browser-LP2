@@ -1,6 +1,6 @@
 function loadKegiatan(){
 		$.ajax({
-			url: "http://reservasi.lp2.if.its.ac.id/feeder/Laboratorium%20Pemrograman%202",
+			url: endpoint,
 			type: 'GET',
 			success: function (data) {
 				if(data.next.length > 0){
@@ -35,6 +35,14 @@ function loadKegiatan(){
 		chrome.storage.local.get(['status'], function(result){
 			console.log(result);
 		});
+}
+
+function getEndPoint(){
+	$.getJSON("endpoint.json", function (data) {
+		$.each(data, function (index, value) {
+			 endpoint = value;
+		});
+	});
 }
 
 function sendMessage(bool, kegiatan) {
@@ -88,4 +96,6 @@ var initialize = (function() {
 
 initialize();
 
-setInterval(loadKegiatan, 10000);
+var endpoint;
+getEndPoint();
+setInterval(loadKegiatan, 3000);
