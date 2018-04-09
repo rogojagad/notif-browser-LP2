@@ -12,22 +12,35 @@ function loadKegiatan(){
 						"selesai": next_event.waktu_selesai_permohonan_peminjaman
 					}
 
-					sendMessage("ada", message);
+					sendMessage("ada-next", 'container-next', message);
 
 					notify(message);
 
 					setState('disabled');
 				}
-				else {
+				else if(data.next.length === 0) {
 					var message = {
 						"nama": null,
 						"mulai": null,
 						"selesai": null
 					}
 
-					sendMessage("tidak", message);
+					sendMessage("tidak-next", 'container-next', message);
 
 					setState('enabled');
+				}
+
+				if(data.now.length > 0){
+					event_now = data.now[0];
+
+					var message = {
+						"nama": event_now.nama_kegiatan,
+						"mulai": event_now.waktu_mulai_permohonan_peminjaman,
+						"selesai": event_now.waktu_selesai_permohonan_peminjaman
+					}
+
+					sendMessage("ada-now", 'container-now', message);
+
 				}
 			}
 		});
@@ -45,19 +58,24 @@ function getEndPoint(){
 	});
 }
 
-function sendMessage(bool, kegiatan) {
+function sendMessage(bool, target, kegiatan) {
 	var views = chrome.extension.getViews({type: "popup"});
 
-	if (bool === "ada") {
+	if (bool === "ada-next") {
 		var info_kegiatan = "<p style='text-align: center; margin-top: 4em;'><strong>"+kegiatan.nama+"</strong></p>";
 		info_kegiatan += "<p style='text-align: center'>"+kegiatan.mulai+" sampai "+kegiatan.selesai+"</p>"
 	}
 	else{
-		var info_kegiatan = "<p style='text-align:center;margin-top: 5em;'>Belum ada, enjoy your time :)</p>";
+		var info_kegiatan = "<p style='text-align:center;'>Belum ada, enjoy your time :)</p>";
+	}
+
+	if (bool === "ada-now") {
+		var info_kegiatan = "<p style='text-align: center;'><strong>"+kegiatan.nama+"</strong></p>";
+		info_kegiatan += "<p style='text-align: center'>"+kegiatan.mulai+" sampai "+kegiatan.selesai+"</p>"
 	}
 
 	if (views.length !== 0) {
-		views[0].document.getElementById('container').innerHTML = info_kegiatan;
+		views[0].document.getElementById(target).innerHTML = info_kegiatan;
 	}
 }
 
